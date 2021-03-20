@@ -25,10 +25,33 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import axios from 'axios';
 
 const App: () => React$Node = () => {
 
-  const TOKEN = '233234234';
+  const TOKEN = 'randomtoken';
+  const baseUrl = "http://192.168.1.2:5100/attendanceapp-155d0/us-central1/";
+
+  const getTokenFromNodeMcu = () => {
+    // axios.get('http://192.168.33.33/getToken')
+  }
+
+  const verifyToken = (token) => {
+    axios.post(`${baseUrl}verifyToken`, {
+      token,
+    })
+    .then(function (response) {
+      console.log(response.data);
+      if (response.data.isTokenVerified) {
+        console.log('token is verified');
+        return;
+      }
+      console.log('Token is wrong')
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
 
   const aa = () => {
     ReactNativeBiometrics.simplePrompt({promptMessage: 'Confirm fingerprint'})
@@ -36,9 +59,10 @@ const App: () => React$Node = () => {
       const { success } = resultObject
    
       if (success) {
-        console.log('successful biometrics provided')
-        // send token to cloud function
 
+        console.log('successful biometrics provided')
+        // get from nodemcu
+        verifyToken(TOKEN);
       } else {
         console.log('user cancelled biometric prompt')
       }
@@ -57,7 +81,7 @@ const App: () => React$Node = () => {
           style={styles.scrollView}>
             <View style={{flex:1, padding:20, paddingTop:400}}>
             <Button
-              onPress={aa} 
+              onPress={() => aa()} 
               title="Confirm Fingerprint"
               color="#841584"
               accessibilityLabel="Learn more about this purple button"
