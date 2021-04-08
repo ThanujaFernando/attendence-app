@@ -9,6 +9,8 @@
 import React from 'react';
 import ReactNativeBiometrics from 'react-native-biometrics'
 import {
+  Image,
+  TouchableOpacity,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -53,7 +55,7 @@ const App: () => React$Node = () => {
     });
   }
 
-  const aa = () => {
+  const Fprint = () => {
     ReactNativeBiometrics.simplePrompt({promptMessage: 'Confirm fingerprint'})
     .then((resultObject) => {
       const { success } = resultObject
@@ -62,6 +64,7 @@ const App: () => React$Node = () => {
 
         console.log('successful biometrics provided')
         // get from nodemcu
+        
         verifyToken(TOKEN);
       } else {
         console.log('user cancelled biometric prompt')
@@ -75,23 +78,29 @@ const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+      <SafeAreaView >
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-            <View style={{flex:1, padding:20, paddingTop:400}}>
-            <Button
-              onPress={() => aa()} 
-              title="Confirm Fingerprint"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-              style={{
-                //position:"absolute",
-                //top:"80px"
-                  flex:1,
-                  paddingTop: 50,
-              }}
-            /></View>
+            <View style={{flex:1, padding:120, backgroundColor: '#F8BB40', justifyContent: 'center',
+            alignItems: 'center',}}>
+            <Image
+            style={styles.image}
+            source={require('./images/fingerprint.png')}
+            />
+            </View>
+            <View style={{flex:1, padding:20, paddingTop:50, backgroundColor: '#F8BB40', justifyContent: 'center',
+            alignItems: 'center',}}>
+            
+            <TouchableOpacity onPress={() => Fprint()} style={styles.button}>
+            <Text style={styles.buttonText}>Confirm Fingerprint</Text>
+            </TouchableOpacity></View>
+            <View style={{flex:1, padding:20, paddingTop:400, backgroundColor: '#F8BB40'}}>
+
+            </View>
+            <View style={{flex:1, padding:20, paddingTop:400, backgroundColor: '#F8BB40'}}>
+
+            </View>
             {/* <Button onPress={() => aa()}>asdafsdf</Button> */}
         </ScrollView>
       </SafeAreaView>
@@ -100,6 +109,10 @@ const App: () => React$Node = () => {
 };
 
 const styles = StyleSheet.create({
+  image: {
+    width: 200,
+    height: 300
+  },
   scrollView: {
     backgroundColor: Colors.lighter,
   },
@@ -135,6 +148,17 @@ const styles = StyleSheet.create({
     padding: 4,
     paddingRight: 12,
     textAlign: 'right',
+  },
+  button: {
+    width: 300,
+    backgroundColor: "gray",
+    padding: 20,
+    borderRadius: 10
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: "white"
+    
   },
 });
 
