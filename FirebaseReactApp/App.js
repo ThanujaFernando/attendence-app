@@ -34,8 +34,21 @@ const App: () => React$Node = () => {
   const TOKEN = 'randomtoken';
   const baseUrl = "http://192.168.1.2:5100/attendanceapp-155d0/us-central1/";
 
-  const getTokenFromNodeMcu = () => {
+  const getTokenFromNodeMcu = async () => {
     // axios.get('http://192.168.33.33/getToken')
+    try {
+      console.log('getTokenFunctionStart');
+      let response = await fetch(
+        //'http://192.168.43.10/token'
+        'http://192.168.1.10/token'
+      );
+      let json = await response.json();
+      console.log(json.token);
+      return json.token;
+    } catch (error) {
+      console.error(error);
+    }
+
   }
 
   const verifyToken = (token) => {
@@ -63,9 +76,11 @@ const App: () => React$Node = () => {
       if (success) {
 
         console.log('successful biometrics provided')
+        console.log('2nd log')
         // get from nodemcu
+        getTokenFromNodeMcu();
         
-        verifyToken(TOKEN);
+        // verifyToken(TOKEN);
       } else {
         console.log('user cancelled biometric prompt')
       }
